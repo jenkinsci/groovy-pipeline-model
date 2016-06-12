@@ -25,11 +25,16 @@ public class App {
     public static void main(String[] args) throws Exception {
         File src = new File("test.groovy");
         CompilationUnit cu = new CompilationUnit(
-                CompilerConfiguration.DEFAULT, new CodeSource(src.toURL(),new Certificate[0]), new GroovyClassLoader());
+                CompilerConfiguration.DEFAULT,
+                new CodeSource(src.toURL(),new Certificate[0]),
+                new GroovyClassLoader());
+        cu.addSource(src);
+
         cu.addPhaseOperation(new SourceUnitOperation() {
             @Override
             public void call(SourceUnit source) throws CompilationFailedException {
                 System.out.println(source);
+                source.getAST();
             }
         }, phase);
         cu.addPhaseOperation(new PrimaryClassNodeOperation() {
@@ -38,7 +43,6 @@ public class App {
                 System.out.println(source);
             }
         }, phase);
-        cu.addSource(src);
         try {
             cu.compile(phase);
         } catch (CompilationFailedException cfe) {

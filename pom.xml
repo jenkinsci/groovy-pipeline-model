@@ -26,6 +26,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>annotations</artifactId>
+      <version>3.0.0</version>
+      <scope>optional</scope>
+    </dependency>
+    <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy</artifactId>
       <version>2.4.7</version>
@@ -33,7 +39,7 @@
         let the user of this library select the right flavor of groovy,
         including groovy vs groovy-all
       -->
-      <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
   </dependencies>
 
