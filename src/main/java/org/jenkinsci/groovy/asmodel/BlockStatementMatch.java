@@ -1,13 +1,9 @@
 package org.jenkinsci.groovy.asmodel;
 
-import groovy.lang.Closure;
-import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.expr.ClosureExpression;
 import org.codehaus.groovy.ast.expr.Expression;
 import org.codehaus.groovy.ast.expr.MethodCallExpression;
 import org.codehaus.groovy.ast.expr.TupleExpression;
-import org.codehaus.groovy.ast.expr.VariableExpression;
-import org.codehaus.groovy.ast.stmt.ExpressionStatement;
 
 import javax.annotation.Nullable;
 
@@ -52,24 +48,13 @@ public class BlockStatementMatch {
         this.body = body;
     }
 
-    public static final Matcher<BlockStatementMatch> MATCHER = new Matcher<BlockStatementMatch>() {
-        @Override
-        public BlockStatementMatch match(ASTNode n) {
-            if (n instanceof MethodCallExpression) {
-                MethodCallExpression whole = (MethodCallExpression) n;
-                String methodName = matchMethodName(whole);
-                TupleExpression args = (TupleExpression)whole.getArguments();
-                int sz = args.getExpressions().size();
-                if (sz>0) {
-                    Expression last = args.getExpression(sz - 1);
-                    if (last instanceof ClosureExpression) {
-                        ClosureExpression body = (ClosureExpression) last;
-                        return new BlockStatementMatch(whole,methodName,body);
-                    }
-                }
-            }
-
+    /**
+     * Gets the i-th argument if it exists, or return null.
+     */
+    public @Nullable Expression getArgument(int i) {
+        if (i<arguments.getExpressions().size())
+            return arguments.getExpression(i);
+        else
             return null;
-        }
-    };
+    }
 }
