@@ -1,5 +1,9 @@
 package org.jenkinsci.groovy.asmodel.model;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,5 +17,15 @@ public final class Stage {
 
     public Stage(String name) {
         this.name = name;
+    }
+
+    public JSONObject toJSON() {
+        JSONArray a = new JSONArray();
+        for (Branch br : branches) {
+            a.add(br.toJSON());
+        }
+        return new JSONObject()
+                .accumulate("name",name)
+                .accumulate("branches",a);
     }
 }

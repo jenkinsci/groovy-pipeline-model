@@ -9,4 +9,9 @@ public class Step {
     public Step(String line) {
         this.line = line;
     }
+
+    public Object toJSON() {
+        // TODO: further data binding
+        return line;
+    }
 }

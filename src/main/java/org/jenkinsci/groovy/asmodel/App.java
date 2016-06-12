@@ -10,6 +10,7 @@ import org.codehaus.groovy.control.CompilationUnit.SourceUnitOperation;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.Phases;
 import org.codehaus.groovy.control.SourceUnit;
+import org.jenkinsci.groovy.asmodel.model.PipelineDef;
 
 import java.io.File;
 import java.security.CodeSource;
@@ -34,7 +35,8 @@ public class App {
             @Override
             public void call(SourceUnit source) throws CompilationFailedException {
                 try {
-                    new ModelParser(source.getSource()).parse(source.getAST());
+                    PipelineDef def = new ModelParser(source.getSource()).parse(source.getAST());
+                    System.out.println(def.toJSON().toString(2));
                 } catch (NotParseableException e) {
                     e.printStackTrace();
                 }
