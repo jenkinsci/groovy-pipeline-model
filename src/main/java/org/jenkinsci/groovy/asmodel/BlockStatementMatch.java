@@ -5,6 +5,7 @@ import org.codehaus.groovy.ast.expr.ClosureExpression;
 import org.codehaus.groovy.ast.expr.Expression;
 import org.codehaus.groovy.ast.expr.MethodCallExpression;
 import org.codehaus.groovy.ast.expr.TupleExpression;
+import org.codehaus.groovy.ast.stmt.Statement;
 
 import javax.annotation.Nullable;
 
@@ -18,7 +19,7 @@ import javax.annotation.Nullable;
  * </xmp></pre>
  *
  * @author Kohsuke Kawaguchi
- * @see ModelParser#blockStatement(ASTNode)
+ * @see ModelParser#matchBlockStatement(Statement)
  */
 public class BlockStatementMatch {
     /**

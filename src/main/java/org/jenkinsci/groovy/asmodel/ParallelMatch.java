@@ -2,6 +2,7 @@ package org.jenkinsci.groovy.asmodel;
 
 import org.codehaus.groovy.ast.expr.ClosureExpression;
 import org.codehaus.groovy.ast.expr.MethodCallExpression;
+import org.codehaus.groovy.ast.stmt.Statement;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,6 +19,7 @@ import java.util.Map;
  * </xmp></pre>
  *
  * @author Kohsuke Kawaguchi
+ * @see ModelParser#matchParallel(Statement)
  */
 public class ParallelMatch {
     /**
