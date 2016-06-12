@@ -1,5 +1,6 @@
 package org.jenkinsci.groovy.asmodel;
 
+import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.ast.expr.ClosureExpression;
 import org.codehaus.groovy.ast.expr.ConstantExpression;
@@ -12,6 +13,7 @@ import org.codehaus.groovy.ast.expr.VariableExpression;
 import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.ast.stmt.ExpressionStatement;
 import org.codehaus.groovy.ast.stmt.Statement;
+import org.codehaus.groovy.control.io.ReaderSource;
 import org.jenkinsci.groovy.asmodel.model.Branch;
 import org.jenkinsci.groovy.asmodel.model.PipelineDef;
 import org.jenkinsci.groovy.asmodel.model.Stage;
@@ -25,6 +27,15 @@ import java.util.Map.Entry;
  * @author Kohsuke Kawaguchi
  */
 public class ModelParser {
+    /**
+     * Represents the source file being processed.
+     */
+    private final ReaderSource source;
+
+    public ModelParser(ReaderSource source) {
+        this.source = source;
+    }
+
     /**
      * Given a Groovy AST that represents a parsed source code, parses
      * that into {@link PipelineDef}
@@ -93,8 +104,11 @@ public class ModelParser {
      * Parses a statement into a {@link Step}
      */
     public Step parseStep(Statement st) throws NotParseableException {
-        XXX
-        return null;
+        MethodCallExpression mc = matchMethodCall(st);
+        if (mc==null)   throw new NotParseableException("Expected a step",st);
+
+        // TODO: parse parameters and what not to make sure this method call consists of literals and such.
+        return new Step(getSourceText(mc));
     }
 
     protected @Nullable String stringLiteral(Expression exp) {
@@ -211,5 +225,27 @@ public class ModelParser {
             }
         }
         return null;
+    }
+
+    /**
+     * Obtains the source text of the given {@link ASTNode}.
+     */
+    protected String getSourceText(ASTNode n) {
+        StringBuilder result = new StringBuilder();
+        for (int x = n.getLineNumber(); x <= n.getLastLineNumber(); x++) {
+            String line = source.getLine(x, null);
+            if (line == null)
+                throw new AssertionError("Unable to get source line"+x);
+
+            if (x == n.getLastLineNumber()) {
+                line = line.substring(0, n.getLastColumnNumber() - 1);
+            }
+            if (x == n.getLineNumber()) {
+                line = line.substring(n.getColumnNumber() - 1);
+            }
+            result.append(line).append('\n');
+        }
+
+        return result.toString().trim();
     }
 }

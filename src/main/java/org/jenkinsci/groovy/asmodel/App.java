@@ -34,7 +34,7 @@ public class App {
             @Override
             public void call(SourceUnit source) throws CompilationFailedException {
                 try {
-                    new ModelParser().parse(source.getAST());
+                    new ModelParser(source.getSource()).parse(source.getAST());
                 } catch (NotParseableException e) {
                     e.printStackTrace();
                 }
