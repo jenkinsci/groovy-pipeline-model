@@ -1,5 +1,6 @@
 package org.jenkinsci.groovy.asmodel;
 
+import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.expr.ClosureExpression;
 import org.codehaus.groovy.ast.expr.Expression;
 import org.codehaus.groovy.ast.expr.MethodCallExpression;
@@ -8,7 +9,7 @@ import org.codehaus.groovy.ast.expr.TupleExpression;
 import javax.annotation.Nullable;
 
 /**
- * Pattern matcher for the following Groovy construct:
+ * Pattern match for the following Groovy construct:
  *
  * <pre><xmp>
  * foo(...) {
@@ -17,6 +18,7 @@ import javax.annotation.Nullable;
  * </xmp></pre>
  *
  * @author Kohsuke Kawaguchi
+ * @see ModelParser#blockStatement(ASTNode)
  */
 public class BlockStatementMatch {
     /**

@@ -33,16 +33,14 @@ public class App {
         cu.addPhaseOperation(new SourceUnitOperation() {
             @Override
             public void call(SourceUnit source) throws CompilationFailedException {
-                System.out.println(source);
-                source.getAST();
+                try {
+                    new ModelParser().parse(source.getAST());
+                } catch (NotParseableException e) {
+                    e.printStackTrace();
+                }
             }
         }, phase);
-        cu.addPhaseOperation(new PrimaryClassNodeOperation() {
-            @Override
-            public void call(SourceUnit source, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
-                System.out.println(source);
-            }
-        }, phase);
+
         try {
             cu.compile(phase);
         } catch (CompilationFailedException cfe) {
