@@ -40,7 +40,7 @@
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy</artifactId>
-      <version>2.4.7</version>
+      <version>2.4.21</version>
       <!--
         let the user of this library select the right flavor of groovy,
         including groovy vs groovy-all
